@@ -4,6 +4,9 @@ import com.study.config.MybatisConfig;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PostDao {
     private SqlSessionFactory factory = MybatisConfig.getSqlSession();
 
@@ -18,5 +21,17 @@ public class PostDao {
         }
         sqlSession.close();
         return result;
+    }
+
+    public void insertPostWithFile(PostDto postDto) throws Exception{
+
+    }
+
+    //카테고리id 읽어오기
+    public List<Integer> selectCategoryIdList(){
+        SqlSession sqlSession = factory.openSession();
+        List<Integer> list = sqlSession.selectList("selectCategoriesId");
+        sqlSession.close();
+        return list;
     }
 }

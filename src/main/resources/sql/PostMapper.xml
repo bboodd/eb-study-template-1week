@@ -5,8 +5,15 @@
 
 <mapper namespace="post">
 
+<!--    게시글 등록-->
     <insert id="insertPost" parameterType="com.study.post.model.PostDto">
         INSERT INTO post(category_id, name, password, title, content)
         VALUES (#{categoryId}, #{name}, #{password}, #{title}, #{content})
     </insert>
+
+<!--    전체 카테고리id 가져오기-->
+    <select id="selectCategoriesId" resultType="int">
+        SELECT category_id
+        FROM category
+    </select>
 </mapper>
