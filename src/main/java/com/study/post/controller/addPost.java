@@ -3,14 +3,20 @@ package com.study.post.controller;
 import com.study.post.model.Post;
 import com.study.post.model.PostDao;
 import com.study.post.model.PostDto;
+import com.study.post.model.PostService;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
+@Slf4j
 @WebServlet(name = "addPost", value = "/post/add")
 public class addPost extends HttpServlet {
+
+    private final PostService postService = new PostService();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("views/addPost.jsp");
@@ -19,8 +25,6 @@ public class addPost extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        PostDao postDao = new PostDao();
 
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));
         String name = request.getParameter("name");
@@ -35,11 +39,9 @@ public class addPost extends HttpServlet {
         postDto.setTitle(title);
         postDto.setContent(content);
 
-
-        System.out.println(postDto.toString());
-
+        //게시물 등록
         try {
-            int result = postDao.insertPost(postDto);
+            int result = postService.insertPostAndValidate(postDto);
             System.out.println(result + "번 게시글 추가");
         } catch (Exception e) {
             System.out.println("Insert err" + e);
