@@ -38,6 +38,7 @@ public class addPost extends HttpServlet {
 
         System.out.println(postDto.toString());
 
+        //게시물 등록
         try {
             int result = postDao.insertPost(postDto);
             System.out.println(result + "번 게시글 추가");
