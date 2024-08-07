@@ -14,6 +14,8 @@ public class PostInsertService implements HttpService{
 
     public String doService(HttpServletRequest request, HttpServletResponse response){
 
+        log.trace("doService(req, res) invoked.");
+
         String categoryId = request.getParameter("categoryId");
         String name = request.getParameter("name");
         String password = request.getParameter("password");
@@ -32,6 +34,7 @@ public class PostInsertService implements HttpService{
             postValidator.validate(postDto);
             postDao.insertPost(postDto);
 
+            // 자동으로 값이 들어간 postId를 추출한다.
             int resultId= postDto.getPostId();
             if(resultId != 0) {
                 log.info(resultId + "번 게시글 추가");

@@ -2,36 +2,64 @@ package com.study.model;
 
 import com.study.config.MybatisConfig;
 import com.study.model.PostDto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.sql.SQLException;
 import java.util.List;
 
+@Slf4j
 public class PostDao {
     private SqlSessionFactory factory = MybatisConfig.getSqlSession();
 
     //게시글 추가
     public int insertPost(PostDto postDto) throws Exception{
-        SqlSession sqlSession = factory.openSession();
-        int result = sqlSession.insert("insertPost", postDto);
-        if(result == 0){
-            sqlSession.rollback();
-        } else{
-            sqlSession.commit();
+
+        log.trace("insert({}) invoked.", postDto);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //삽입된 행의 수 반환
+            int result = sqlSession.insert("insertPost", postDto);
+
+            if(result == 0){
+                sqlSession.rollback();
+            } else{
+                sqlSession.commit();
+            }
+
+            sqlSession.close();
+
+            return result;
+
+        } catch(Exception e) {
+            throw new SQLException(e);
         }
-        sqlSession.close();
-        return result;
     }
 
     public void insertPostWithFile(PostDto postDto) throws Exception{
 
     }
 
-    //카테고리id 읽어오기
-    public List<Integer> selectCategoryIdList(){
-        SqlSession sqlSession = factory.openSession();
-        List<Integer> list = sqlSession.selectList("selectCategoriesId");
-        sqlSession.close();
-        return list;
+    //카테고리id list 읽어오기
+    public List<Integer> selectCategoryIdList() throws Exception {
+
+        log.trace("select() invoked");
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //카테고리id를 리스트로 반환
+            List<Integer> list = sqlSession.selectList("selectCategoriesId");
+
+            sqlSession.close();
+
+            return list;
+
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
     }
 }

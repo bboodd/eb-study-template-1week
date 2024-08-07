@@ -30,8 +30,13 @@ public class BoardControllerServlet extends HttpServlet {
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        log.trace("service(req, res) invoked.");
+
         HttpService targetService = findTargetService(request);
+
+        //비즈니스 로직 수행 결과 데이터를 공유데이터영역인 "Application Scope"(accessed by ServletContext)에 바인딩하는 방법도 있음.
         String view = targetService.doService(request, response);
+
         //TODO: view 문자열 분석해서 dispatch 혹은 redirect
 
         if(true){
@@ -47,9 +52,24 @@ public class BoardControllerServlet extends HttpServlet {
 
         String method = request.getMethod();
         String requestUri = request.getRequestURI();
+        String contextPath = request.getContextPath();
+        String requestUrl = request.getRequestURL().toString();
 
-        log.info(requestUri);
-        log.info(method);
+        log.info("\t + 0. contextPath : {}", contextPath); // /maven01 or /myapp
+
+        // + contextPath가 /(루트)일 경우 빈 문자열이라 substring 필요없음
+
+        log.info("\t + 1. requestUri : {}", requestUri); // /*.do
+        log.info("\t + 2. requestUrl : {}", requestUrl); // http://localhost:8080/*.do
+        log.info("\t + 3. method : {}", method); // GET
+
+        // substring으로 uri에서 컨텍스트 패스를 제외한 문자열을 돌려준다.
+        // String command = requestUri.substring(contextPath.length());
+
+        String command = requestUri;
+        log.info("\t + 4. command : {}", command); // /*.do
+
+        // command는 contextPath가 그냥 루트일 경우 URI와 동일하게 나온다.
 
         HttpService service =
 
