@@ -32,7 +32,12 @@
 
 <form method="post">
     <label>Category:
-        <input type="number" name="categoryId" value=1 readonly> <br />
+        <select type="number" name="categoryId">
+            <option value="1">JAVA</option>
+            <option value="2">JavaScript</option>
+            <option value="3">Database</option>
+            <option value="4">React</option>
+        </select>
     </label>
 
     <label>Name:

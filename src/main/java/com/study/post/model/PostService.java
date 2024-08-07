@@ -8,21 +8,21 @@ import java.util.List;
 @Slf4j
 public class PostService {
 
-    final int NAME_MAX_LENGTH = 5;
-    final int NAME_MIN_LENGTH = 1;
-    final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
-    final int TITLE_CONTENT_MIN_LENGTH = 4;
-    final int TITLE_MAX_LENGTH = 100;
-    final int CONTENT_MAX_LENGTH = 2000;
-
     private final PostDao postDao = new PostDao();
 
     private final PostValidator postValidator = new PostValidator();
 
     public int insertPostAndValidate(PostDto postDto) throws Exception{
-        postValidator.validate(postDto);
-        int result = postDao.insertPost(postDto);
-        return result;
+        try {
+            postValidator.validate(postDto);
+            postDao.insertPost(postDto);
+        } catch (Exception e) {
+            log.info("에러메세지: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+            int postId = postDto.getPostId();
+            return postId;
+        }
     }
 
 

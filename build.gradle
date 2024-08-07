@@ -36,6 +36,8 @@ dependencies {
 
     implementation 'org.mybatis:mybatis:3.5.16'
 
+    implementation 'ch.qos.logback:logback-classic:1.5.6'
+    implementation 'ch.qos.logback:logback-core:1.5.6'
     implementation 'org.slf4j:slf4j-api:2.1.0-alpha1'
 
 }

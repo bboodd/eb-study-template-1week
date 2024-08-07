@@ -42,9 +42,13 @@ public class addPost extends HttpServlet {
         //게시물 등록
         try {
             int result = postService.insertPostAndValidate(postDto);
-            System.out.println(result + "번 게시글 추가");
+            if(result != 0) {
+                log.info(result + "번 게시글 추가");
+            } else {
+                log.info("게시글 추가 실패");
+            }
         } catch (Exception e) {
-            System.out.println("Insert err" + e);
+            log.info("Insert err" + e);
         }
 
         request.setAttribute("post", postDto);
