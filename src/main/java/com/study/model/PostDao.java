@@ -1,10 +1,10 @@
-package com.study.post.model;
+package com.study.model;
 
 import com.study.config.MybatisConfig;
+import com.study.model.PostDto;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PostDao {
