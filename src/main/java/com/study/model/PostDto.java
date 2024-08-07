@@ -1,4 +1,4 @@
-package com.study.post.model;
+package com.study.model;
 
 import lombok.Getter;
 import lombok.Setter;

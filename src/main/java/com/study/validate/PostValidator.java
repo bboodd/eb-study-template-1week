@@ -1,6 +1,6 @@
-package com.study.post.validate;
+package com.study.validate;
 
-import com.study.post.model.PostDto;
+import com.study.model.PostDto;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -14,6 +14,7 @@ public class PostValidator {
     final int TITLE_MAX_LENGTH = 100;
     final int CONTENT_MAX_LENGTH = 2000;
 
+//    값을 받아오지 않는 필드에 대한 유효성?
     public void validate(PostDto postDto){
         idValidate(postDto.getPostId());
         categoryValidate(postDto.getCategoryId());

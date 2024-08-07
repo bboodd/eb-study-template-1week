@@ -1,4 +1,4 @@
-<%@ page import="com.study.post.model.PostDto" %><%--
+<%@ page import="com.study.model.PostDto" %><%--
   Created by IntelliJ IDEA.
   User: gimhaghyeon
   Date: 8/6/24
@@ -30,9 +30,14 @@
     <h2> add post</h2>
 </div>
 
-<form method="post">
+<form method="post" action="insert.do">
     <label>Category:
-        <input type="number" name="categoryId" value=1 readonly> <br />
+        <select type="number" name="categoryId">
+            <option value="1">JAVA</option>
+            <option value="2">JavaScript</option>
+            <option value="3">Database</option>
+            <option value="4">React</option>
+        </select>
     </label>
 
     <label>Name:

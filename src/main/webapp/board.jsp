@@ -1,4 +1,3 @@
-<%@ page import="com.study.connection.ConnectionTest" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -69,6 +68,6 @@
     </div>
 </section>
 
-<button>등록</button>
+<button onclick="location.href='insert.do'">등록</button>
 </body>
 </html>
