@@ -47,8 +47,12 @@ public class PostValidator {
     }
 
     private void nameValidate(String name){
-        int nameLen = name.length();
         try {
+            if(name == null){
+                throw new NullPointerException("이름을 입력해야 합니다.");
+            }
+
+            int nameLen = name.length();
             if(nameLen < NAME_MIN_LENGTH || nameLen > NAME_MAX_LENGTH){
                 throw new Exception("이름은 " + NAME_MIN_LENGTH + "글자 이상 " + NAME_MAX_LENGTH + "글자 미만이어야 합니다.");
             }
@@ -60,6 +64,10 @@ public class PostValidator {
 
     private void passwordValidate(String password){
         try {
+            if(password == null){
+                throw new NullPointerException("비밀번호를 입력해야 합니다.");
+            }
+
             if(!password.matches(PASSWORD_REGEX)){
                 throw new Exception("비밀번호는 4글자 이상, 16글자 미만인 영문/숫자/특수문자를 포함한 문자여야 합니다.");
             }
@@ -71,8 +79,12 @@ public class PostValidator {
     }
 
     private void titleValidate(String title){
-        int titleLen = title.length();
         try {
+            if(title == null){
+                throw new NullPointerException("제목을 입력해야 합니다.");
+            }
+
+            int titleLen = title.length();
             if(titleLen < TITLE_CONTENT_MIN_LENGTH || titleLen > TITLE_MAX_LENGTH){
                 throw new Exception("제목은 4글자 이상, 100글자 미만이어야 합니다.");
             }
@@ -83,8 +95,12 @@ public class PostValidator {
     }
 
     private void contentValidate(String content){
-        int contentLen = content.length();
         try {
+            if(content == null){
+                throw new NullPointerException("내용을 입력해야 합니다.");
+            }
+
+            int contentLen = content.length();
             if(contentLen < TITLE_CONTENT_MIN_LENGTH || contentLen > CONTENT_MAX_LENGTH){
                 throw new Exception("내용은 4글자 이상, 2000글자 미만이어야 합니다.");
             }

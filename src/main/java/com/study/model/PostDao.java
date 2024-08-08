@@ -16,7 +16,7 @@ public class PostDao {
     //게시글 추가
     public int insertPost(PostDto postDto) throws Exception{
 
-        log.trace("insert({}) invoked.", postDto);
+        log.trace("insertPost({}) invoked.", postDto);
 
         try {
             SqlSession sqlSession = factory.openSession();
@@ -43,21 +43,57 @@ public class PostDao {
 
     }
 
-    //카테고리id list 읽어오기
-    public List<Integer> selectCategoryIdList() throws Exception {
+    //카테고리 리스트 읽어오기
+    public List<CategoryVo> selectCategoryList() throws Exception {
 
-        log.trace("select() invoked");
+        log.trace("selectCategoryList() invoked");
 
         try {
             SqlSession sqlSession = factory.openSession();
 
             //카테고리id를 리스트로 반환
-            List<Integer> list = sqlSession.selectList("selectCategoriesId");
+            List<CategoryVo> list = sqlSession.selectList("selectCategoryList");
 
             sqlSession.close();
 
             return list;
 
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    //전체 게시글 목록 리스트 읽어오기
+    public List<PostVo> selectPostList() throws Exception {
+        log.trace("selectPostList() invoked");
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //게시글을 리스트로 반환
+            List<PostVo> list = sqlSession.selectList("selectPostList");
+
+            sqlSession.close();
+
+            return list;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    //검색 게시글 목록 리스트 읽어오기
+    public List<PostVo> selectSearchPostList(SearchDto searchDto) throws Exception {
+        log.trace("selectSearchPostList({}) invoked", searchDto);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //검색된 게시글을 리스트로 반환
+            List<PostVo> list = sqlSession.selectList("selectSearchPostList", searchDto);
+
+            sqlSession.close();
+
+            return list;
         } catch (Exception e){
             throw new SQLException(e);
         }
