@@ -16,6 +16,10 @@ public class GetListService implements HttpService {
 
         log.trace("doService(req, res) invoked");
 
+        /**
+         * 비즈니스 로직
+         */
+
         try {
 
             List<PostVo> postList = postDao.selectPostList();

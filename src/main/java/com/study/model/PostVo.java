@@ -2,14 +2,10 @@ package com.study.model;
 
 import lombok.*;
 
-import java.sql.Date;
-import java.time.LocalDateTime;
-
 //db용 객체
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Value
-//@Value
 public class PostVo {
 
     private int postId;

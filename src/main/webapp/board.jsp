@@ -109,7 +109,7 @@
                         for(PostVo postVo : (List<PostVo>)request.getAttribute("postList")){
                             out.println("<tr>");
                             out.println("<td>" + postVo.getCategory() + "</td>");
-                            out.println("<td>" + postVo.getTitle() + "</td>");
+                            out.println("<td onclick=\"location.href='read.do?postId="+ postVo.getPostId() +"'\">" + postVo.getTitle() + "</td>");
                             out.println("<td>" + postVo.getName() + "</td>");
                             out.println("<td>" + postVo.getViewCount() + "</td>");
                             out.println("<td>" + postVo.getCreateDate() + "</td>");

@@ -98,4 +98,47 @@ public class PostDao {
             throw new SQLException(e);
         }
     }
+
+    //게시글 Id로 읽어오기
+    public PostVo selectPostById(int postId) throws Exception {
+        log.trace("selectPostById({}) invoked", postId);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //검색된 게시글을 Vo로 반환
+            PostVo postVo = sqlSession.selectOne("selectPostById", postId);
+
+            sqlSession.close();
+
+            return postVo;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    //게시글 조회수 1 증가
+    public int updatePostViewCount(int postId) throws Exception {
+        log.trace("updatePostViewCount({}) invoked", postId);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //조회수 증가시 1 반환
+            //실패시 0 반환
+            int result = sqlSession.update("updatePostViewCount", postId);
+
+            if(result == 0){
+                sqlSession.rollback();
+            } else{
+                sqlSession.commit();
+            }
+
+            sqlSession.close();
+
+            return result;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
 }

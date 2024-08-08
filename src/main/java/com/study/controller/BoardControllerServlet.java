@@ -20,7 +20,7 @@ public class BoardControllerServlet extends HttpServlet {
 
     public void init(){
         commandMap.put("GET:list", new GetListService() );
-        commandMap.put("GET:read", new WriteService() );
+        commandMap.put("GET:read", new GetReadService() );
         commandMap.put("GET:insert", new GetInsertService() );
         commandMap.put("POST:insert", new PostInsertService() );
         commandMap.put("GET:update", new WriteService() );
