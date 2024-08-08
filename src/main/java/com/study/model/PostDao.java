@@ -43,16 +43,16 @@ public class PostDao {
 
     }
 
-    //카테고리id list 읽어오기
-    public List<Integer> selectCategoryIdList() throws Exception {
+    //카테고리 리스트 읽어오기
+    public List<CategoryVo> selectCategoryList() throws Exception {
 
-        log.trace("selectCategoryIdList() invoked");
+        log.trace("selectCategoryList() invoked");
 
         try {
             SqlSession sqlSession = factory.openSession();
 
             //카테고리id를 리스트로 반환
-            List<Integer> list = sqlSession.selectList("selectCategoryIdList");
+            List<CategoryVo> list = sqlSession.selectList("selectCategoryList");
 
             sqlSession.close();
 
@@ -63,7 +63,7 @@ public class PostDao {
         }
     }
 
-    //전체 게시글 목록 list 읽어오기
+    //전체 게시글 목록 리스트 읽어오기
     public List<PostVo> selectPostList() throws Exception {
         log.trace("selectPostList() invoked");
 
@@ -81,6 +81,7 @@ public class PostDao {
         }
     }
 
+    //검색 게시글 목록 리스트 읽어오기
     public List<PostVo> selectSearchPostList(SearchDto searchDto) throws Exception {
         log.trace("selectSearchPostList({}) invoked", searchDto);
 

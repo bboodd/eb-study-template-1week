@@ -2,7 +2,9 @@
 <%@ page import="com.study.model.PostVo" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.study.model.SearchDto" %>
+<%@ page import="com.study.model.CategoryVo" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<jsp:useBean id="postDao" class="com.study.model.PostDao"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,10 +41,17 @@
                     <%--        카테고리 테이블에서 출력              --%>
                     <select name="categoryId" id="categoryId">
                         <option value="0">전체 카테고리</option>
-                        <option value="1">JAVA</option>
-                        <option value="2">JavaScript</option>
-                        <option value="3">Database</option>
-                        <option value="4">React</option>
+                    <%
+                        List<CategoryVo> categoryList = postDao.selectCategoryList();
+                        if(categoryList == null || categoryList.size() == 0) {
+                    %>
+                        <option>카테고리를 찾을 수 없음</option>
+                    <%  } else {
+                            for(CategoryVo vo : categoryList){
+                                out.println("<option value='" + vo.getCategoryId() + "'>" + vo.getCategoryName() + "</option>");
+                            }
+                        }
+                    %>
                     </select>
                 </div>
 
@@ -53,17 +62,18 @@
                     <!-- 검색 버튼 -->
                     <button type="submit">검색</button>
                 </div>
+                <script>
                 <%
                     if(request.getAttribute("searchDto") != null){
                         SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");
-                        out.println("<script>");
+
                         out.println("$('#startDate').val(" + searchDto.getStartDate() + ");");
                         out.println("$('#endtDate').val(" + searchDto.getEndDate() + ");");
                         out.println("$('#categoryId').val(" + searchDto.getCategoryId() + ");");
                         out.println("$('#keyword').val(" + searchDto.getKeyword() + ");");
-                        out.println("</script>");
                     }
                 %>
+                </script>
             </form>
         </div>
 

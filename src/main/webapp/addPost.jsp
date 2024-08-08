@@ -1,4 +1,6 @@
-<%@ page import="com.study.model.PostDto" %><%--
+<%@ page import="com.study.model.PostDto" %>
+<%@ page import="com.study.model.CategoryVo" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: gimhaghyeon
   Date: 8/6/24
@@ -6,6 +8,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="postDao" class="com.study.model.PostDao"/>
 <html>
 <head>
     <title>Title</title>
@@ -32,11 +35,18 @@
 
 <form method="post" action="insert.do">
     <label>Category:
-        <select type="number" name="categoryId">
-            <option value="1">JAVA</option>
-            <option value="2">JavaScript</option>
-            <option value="3">Database</option>
-            <option value="4">React</option>
+        <select type='number' name='categoryId'>
+            <%
+                List<CategoryVo> categoryList = postDao.selectCategoryList();
+                if(categoryList == null || categoryList.size() == 0) {
+            %>
+            <option>카테고리를 찾을 수 없음</option>
+            <%  } else {
+                    for(CategoryVo vo : categoryList){
+                        out.println("<option value='" + vo.getCategoryId() + "'>" + vo.getCategoryName() + "</option>");
+                    }
+                }
+            %>
         </select>
     </label>
 

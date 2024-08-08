@@ -11,9 +11,9 @@
         VALUES (#{categoryId}, #{name}, #{password}, #{title}, #{content})
     </insert>
 
-<!--    전체 카테고리id 가져오기-->
-    <select id="selectCategoryIdList" resultType="int">
-        SELECT category_id
+<!--    전체 카테고리 리스트 가져오기-->
+    <select id="selectCategoryList" resultType="com.study.model.CategoryVo">
+        SELECT category_id AS categoryId, category_name AS categoryName
         FROM category
     </select>
 
