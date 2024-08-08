@@ -31,4 +31,35 @@
             JOIN category category
                 ON post.category_id = category.category_id
     </select>
+
+<!--    검색 게시글 리스트 가져오기-->
+    <select id="selectSearchPostList" parameterType="com.study.model.SearchDto" resultType="com.study.model.PostVo">
+        SELECT
+            post.post_id AS postId,
+            category.category_name AS category,
+            post.name,
+            post.title,
+            post.view_count AS viewCount,
+            DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
+            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
+        FROM post post
+                 JOIN category category
+                      ON post.category_id = category.category_id
+        <where>
+        <if test="startDate != ''">
+            post.create_date >= #{startDate}
+        </if>
+
+        <if test="endDate != ''">
+            AND #{endDate} >= post.create_date
+        </if>
+
+        <if test="categoryId != 0">
+            AND post.category_id = #{categoryId}
+        </if>
+        <if test="keyword != ''">
+            AND CONCAT(post.title, post.name, post.content) LIKE CONCAT('%', #{keyword}, '%')
+        </if>
+        </where>
+    </select>
 </mapper>

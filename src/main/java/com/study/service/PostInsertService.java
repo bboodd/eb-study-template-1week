@@ -31,7 +31,7 @@ public class PostInsertService implements HttpService{
         if(content != null && !"".equals(content)) {postDto.setContent(content);}
 
         try {
-            postValidator.validate(postDto);
+            postValidator.validate(postDto); //db에 넣기 전 dto 검증
             postDao.insertPost(postDto);
 
             // 자동으로 값이 들어간 postId를 추출한다.

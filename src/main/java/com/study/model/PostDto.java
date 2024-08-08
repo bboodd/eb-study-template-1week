@@ -25,7 +25,7 @@ public class PostDto {
 
     int viewCount;
 
-    LocalDateTime createDate;
+    String createDate;
 
-    LocalDateTime updateDate;
+    String updateDate;
 }

@@ -1,11 +1,13 @@
 <%@ page import="com.study.model.PostDto" %>
 <%@ page import="com.study.model.PostVo" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.study.model.SearchDto" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>자유게시판</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
 <%
@@ -21,28 +23,48 @@
     <div class="inner">
 
         <div class="box1">
-            <div class="date">
+            <form method="post" action="search.do">
+                <div class="date">
+                    <label>등록일
+                        <input type="date" name="startDate" id="startDate">
+                        ~
+                        <input type="date" name="endDate" id="endDate">
 
-            </div>
+                    </label>
 
-            <div class="category">
-                <!-- 옵션 -->
-                <%--        카테고리 테이블에서 출력              --%>
-                <select>
-                    <option value="1">JAVA</option>
-                    <option value="2">JavaScript</option>
-                    <option value="3">Database</option>
-                    <option value="4">React</option>
-                </select>
-            </div>
+                </div>
 
-            <div class="search">
-                <!-- 검색창 -->
-                <input type="text" placeholder="검색어를 입력해 주세요. (제목+작성자+내용)" id="searchKeyword">
+                <div class="category">
+                    <!-- 옵션 -->
+                    <%--        카테고리 테이블에서 출력              --%>
+                    <select name="categoryId" id="categoryId">
+                        <option value="0">전체 카테고리</option>
+                        <option value="1">JAVA</option>
+                        <option value="2">JavaScript</option>
+                        <option value="3">Database</option>
+                        <option value="4">React</option>
+                    </select>
+                </div>
 
-                <!-- 검색 버튼 -->
-                <button type="button" id="searchBtn">검색</button>
-            </div>
+                <div class="search">
+                    <!-- 검색창 -->
+                    <input type="text" placeholder="검색어를 입력해 주세요. (제목+작성자+내용)" name="keyword" id="keyword">
+
+                    <!-- 검색 버튼 -->
+                    <button type="submit">검색</button>
+                </div>
+                <%
+                    if(request.getAttribute("searchDto") != null){
+                        SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");
+                        out.println("<script>");
+                        out.println("$('#startDate').val(" + searchDto.getStartDate() + ");");
+                        out.println("$('#endtDate').val(" + searchDto.getEndDate() + ");");
+                        out.println("$('#categoryId').val(" + searchDto.getCategoryId() + ");");
+                        out.println("$('#keyword').val(" + searchDto.getKeyword() + ");");
+                        out.println("</script>");
+                    }
+                %>
+            </form>
         </div>
 
         <%--가져온 list.size         --%>
@@ -55,7 +77,6 @@
                     out.println("<p>총 0건 </p>");
                 }
             %>
-            총 <span></span> 건
         </div>
 
         <div class="box3">
@@ -82,7 +103,11 @@
                             out.println("<td>" + postVo.getName() + "</td>");
                             out.println("<td>" + postVo.getViewCount() + "</td>");
                             out.println("<td>" + postVo.getCreateDate() + "</td>");
-                            out.println("<td>" + postVo.getUpdateDate() + "</td>");
+                            if (postVo.getCreateDate().equals(postVo.getUpdateDate())){
+                                out.println("<td>-</td>");
+                            } else {
+                                out.println("<td>" + postVo.getUpdateDate() + "</td>");
+                            }
                             out.println("</tr>");
                         }
                     }

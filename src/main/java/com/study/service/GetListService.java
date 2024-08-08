@@ -34,6 +34,4 @@ public class GetListService implements HttpService {
 
         return "board.jsp";
     }
-    //TODO: 요청 처리
-    //후속 조치에 필요한 문자열 리턴 "dispatch:some.jsp" or "redirect:/some/do" 등등
 }

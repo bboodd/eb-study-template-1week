@@ -26,6 +26,8 @@ public class BoardControllerServlet extends HttpServlet {
         commandMap.put("GET:update", new WriteService() );
         commandMap.put("PUT:update", new WriteService() );
         commandMap.put("DELETE:delete", new WriteService() );
+        commandMap.put("POST:search", new PostSearchService() );
+        commandMap.put("Unknown", new UnknownService() );
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -79,27 +81,25 @@ public class BoardControllerServlet extends HttpServlet {
                     case "/read.do" -> commandMap.get("GET:read");
                     case "/insert.do" -> commandMap.get("GET:insert");
                     case "/update.do" -> commandMap.get("GET:update");
-                default -> throw new IllegalArgumentException("잘못된 uri " + requestUri);
+                    default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
             case "POST" ->
                 switch (requestUri) {
-                    case "/insert.do"->
-                        commandMap.get("POST:insert");
-                    default -> throw new IllegalArgumentException("잘못된 uri " + requestUri);
+                    case "/insert.do"-> commandMap.get("POST:insert");
+                    case "/search.do" -> commandMap.get("POST:search");
+                    default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
             case "PUT"->
                 switch (requestUri) {
-                    case "/update.do"->
-                        commandMap.get("PUT:update");
-                    default -> throw new IllegalArgumentException("잘못된 uri " + requestUri);
+                    case "/update.do"-> commandMap.get("PUT:update");
+                    default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
             case "DELETE"->
                 switch (requestUri) {
-                    case "/delete.do"->
-                        commandMap.get("DELETE:delete");
-                    default -> throw new IllegalArgumentException("잘못된 uri " + requestUri);
+                    case "/delete.do"-> commandMap.get("DELETE:delete");
+                    default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
-            default -> throw new IllegalArgumentException("잘못된 메서드 " + method);
+            default -> commandMap.get("Unknown"); //오류페이지 오출
         };
 
         return service;

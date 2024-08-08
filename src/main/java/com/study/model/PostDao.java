@@ -16,7 +16,7 @@ public class PostDao {
     //게시글 추가
     public int insertPost(PostDto postDto) throws Exception{
 
-        log.trace("insert({}) invoked.", postDto);
+        log.trace("insertPost({}) invoked.", postDto);
 
         try {
             SqlSession sqlSession = factory.openSession();
@@ -46,7 +46,7 @@ public class PostDao {
     //카테고리id list 읽어오기
     public List<Integer> selectCategoryIdList() throws Exception {
 
-        log.trace("select() invoked");
+        log.trace("selectCategoryIdList() invoked");
 
         try {
             SqlSession sqlSession = factory.openSession();
@@ -65,13 +65,30 @@ public class PostDao {
 
     //전체 게시글 목록 list 읽어오기
     public List<PostVo> selectPostList() throws Exception {
-        log.trace("select() invoked");
+        log.trace("selectPostList() invoked");
 
         try {
             SqlSession sqlSession = factory.openSession();
 
             //게시글을 리스트로 반환
             List<PostVo> list = sqlSession.selectList("selectPostList");
+
+            sqlSession.close();
+
+            return list;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    public List<PostVo> selectSearchPostList(SearchDto searchDto) throws Exception {
+        log.trace("selectSearchPostList({}) invoked", searchDto);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //검색된 게시글을 리스트로 반환
+            List<PostVo> list = sqlSession.selectList("selectSearchPostList", searchDto);
 
             sqlSession.close();
 
