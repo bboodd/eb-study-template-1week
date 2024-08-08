@@ -52,12 +52,30 @@ public class PostDao {
             SqlSession sqlSession = factory.openSession();
 
             //카테고리id를 리스트로 반환
-            List<Integer> list = sqlSession.selectList("selectCategoriesId");
+            List<Integer> list = sqlSession.selectList("selectCategoryIdList");
 
             sqlSession.close();
 
             return list;
 
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    //전체 게시글 목록 list 읽어오기
+    public List<PostVo> selectPostList() throws Exception {
+        log.trace("select() invoked");
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //게시글을 리스트로 반환
+            List<PostVo> list = sqlSession.selectList("selectPostList");
+
+            sqlSession.close();
+
+            return list;
         } catch (Exception e){
             throw new SQLException(e);
         }

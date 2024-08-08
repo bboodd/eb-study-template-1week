@@ -2,15 +2,19 @@ package com.study.model;
 
 import lombok.*;
 
+import java.sql.Date;
 import java.time.LocalDateTime;
 
+//db용 객체
 @AllArgsConstructor
+@NoArgsConstructor(force = true)
 @Value
+//@Value
 public class PostVo {
 
     private int postId;
 
-    private int categoryId;
+    private String category;
 
     private String name;
 
@@ -22,7 +26,7 @@ public class PostVo {
 
     private int viewCount;
 
-    private LocalDateTime createdDate;
+    private String createDate;
 
-    private LocalDateTime updatedDate;
+    private String updateDate;
 }

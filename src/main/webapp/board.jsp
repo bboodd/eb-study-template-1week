@@ -1,3 +1,6 @@
+<%@ page import="com.study.model.PostDto" %>
+<%@ page import="com.study.model.PostVo" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -44,6 +47,14 @@
 
         <%--가져온 list.size         --%>
         <div class="box2">
+            <%
+                if(request.getAttribute("postList") != null){
+                    List<PostVo> list = (List<PostVo>)request.getAttribute("postList");
+                    out.println("<p>총 " + list.size() + "건</p>");
+                } else{
+                    out.println("<p>총 0건 </p>");
+                }
+            %>
             총 <span></span> 건
         </div>
 
@@ -62,6 +73,20 @@
                 </thead>
                 <tbody>
                 <%--            post list 출력         --%>
+                <%
+                    if(request.getAttribute("postList") != null){
+                        for(PostVo postVo : (List<PostVo>)request.getAttribute("postList")){
+                            out.println("<tr>");
+                            out.println("<td>" + postVo.getCategory() + "</td>");
+                            out.println("<td>" + postVo.getTitle() + "</td>");
+                            out.println("<td>" + postVo.getName() + "</td>");
+                            out.println("<td>" + postVo.getViewCount() + "</td>");
+                            out.println("<td>" + postVo.getCreateDate() + "</td>");
+                            out.println("<td>" + postVo.getUpdateDate() + "</td>");
+                            out.println("</tr>");
+                        }
+                    }
+                %>
                 </tbody>
             </table>
         </div>

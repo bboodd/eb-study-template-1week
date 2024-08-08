@@ -41,13 +41,13 @@ public class PostInsertService implements HttpService{
             } else {
                 log.info("게시글 추가 실패");
             }
+
+            request.setAttribute("post", postDto);
+
         } catch (Exception e) {
             log.info("insert err: " + e.getMessage());
             e.printStackTrace();
         }
-
-        request.setAttribute("post", postDto);
-
 
         return "addPost.jsp";
     }
