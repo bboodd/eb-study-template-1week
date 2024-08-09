@@ -25,7 +25,7 @@
     <div class="inner">
 
         <div class="box1">
-            <form method="post" action="search.do">
+            <form method="get" action="list.do">
                 <div class="date">
                     <label>등록일
                         <input type="date" name="startDate" id="startDate">

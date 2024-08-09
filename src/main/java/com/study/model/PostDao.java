@@ -52,26 +52,11 @@ public class PostDao {
     }
 
     //전체 게시글 목록 리스트 읽어오기
-    public List<PostVo> selectPostList() throws Exception {
+    public List<PostVo> selectPostList(SearchDto searchDto) throws Exception {
         SqlSession sqlSession = factory.openSession();
         try {
             //게시글을 리스트로 반환
-            List<PostVo> list = sqlSession.selectList("selectPostList");
-
-            return list;
-        } catch (Exception e){
-            throw new SQLException(e);
-        } finally {
-            sqlSession.close();
-        }
-    }
-
-    //검색 게시글 목록 리스트 읽어오기
-    public List<PostVo> selectSearchPostList(SearchDto searchDto) throws Exception {
-        SqlSession sqlSession = factory.openSession();
-        try {
-            //검색된 게시글을 리스트로 반환
-            List<PostVo> list = sqlSession.selectList("selectSearchPostList", searchDto);
+            List<PostVo> list = sqlSession.selectList("selectPostList", searchDto);
 
             return list;
         } catch (Exception e){

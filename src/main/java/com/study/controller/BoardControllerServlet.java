@@ -26,7 +26,6 @@ public class BoardControllerServlet extends HttpServlet {
         commandMap.put("GET/update.do", new WriteService() );
         commandMap.put("PUT/update.do", new WriteService() );
         commandMap.put("GET/delete.do", new DeleteService() );
-        commandMap.put("POST/search.do", new PostSearchService() );
         commandMap.put("POST/comment.do", new PostCommentService() );
         commandMap.put("Unknown", new UnknownService() );
     }
