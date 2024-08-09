@@ -5,10 +5,13 @@ import lombok.*;
 //db용 객체
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
-@Value
+@Data
+@Builder
 public class PostVo {
 
     private int postId;
+
+    private int categoryId;
 
     private String category;
 
