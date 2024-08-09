@@ -25,7 +25,7 @@ public class BoardControllerServlet extends HttpServlet {
         commandMap.put("POST:insert", new PostInsertService() );
         commandMap.put("GET:update", new WriteService() );
         commandMap.put("PUT:update", new WriteService() );
-        commandMap.put("DELETE:delete", new WriteService() );
+        commandMap.put("GET:delete", new DeleteService() );
         commandMap.put("POST:search", new PostSearchService() );
         commandMap.put("POST:comment", new PostCommentService() );
         commandMap.put("Unknown", new UnknownService() );
@@ -41,22 +41,25 @@ public class BoardControllerServlet extends HttpServlet {
         String view = targetService.doService(request, response);
 
         //TODO: view 문자열 분석해서 dispatch 혹은 redirect
+        String flagWord = view.substring(0, 9);
+        String viewWord = view.substring(9, view.length());
 
-        String end = view.substring(view.length()-4, view.length());
+        log.info("넘어온 view 문자열은: {}", view);
+        log.info("flagWord: {}", flagWord);
+        log.info("viewWord: {}", viewWord);
 
-        log.info("넘어온 view 문자열은: {}", end);
-
-        if(end.equals(".jsp")){
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher(view);
+        if(flagWord.equals("dispatch:")){
+            RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewWord);
             requestDispatcher.forward(request, response);
         } else{
-            response.sendRedirect(view);
+            response.sendRedirect(viewWord);
         }
     }
 
     private HttpService findTargetService(HttpServletRequest  request){
         //TODO: method 및 requestUri 를 분석해서 담당서비스를 찾아서 리턴
 
+        //method 및 uri분석
         String method = request.getMethod();
         String requestUri = request.getRequestURI();
         String contextPath = request.getContextPath();
@@ -83,12 +86,13 @@ public class BoardControllerServlet extends HttpServlet {
 
         HttpService service =
 
-        switch (method) {
+        switch (method) { //담당 서비스를 찾는 로직
             case "GET" -> switch (requestUri) {
                     case "/list.do" -> commandMap.get("GET:list");
                     case "/read.do" -> commandMap.get("GET:read");
                     case "/insert.do" -> commandMap.get("GET:insert");
                     case "/update.do" -> commandMap.get("GET:update");
+                case "/delete.do"-> commandMap.get("GET:delete");
                     default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
             case "POST" ->
@@ -101,11 +105,6 @@ public class BoardControllerServlet extends HttpServlet {
             case "PUT"->
                 switch (requestUri) {
                     case "/update.do"-> commandMap.get("PUT:update");
-                    default -> commandMap.get("Unknown"); //오류페이지 오출
-                };
-            case "DELETE"->
-                switch (requestUri) {
-                    case "/delete.do"-> commandMap.get("DELETE:delete");
                     default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
             default -> commandMap.get("Unknown"); //오류페이지 오출

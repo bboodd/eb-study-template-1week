@@ -45,6 +45,6 @@ public class PostCommentService implements HttpService{
         }
 
 //        여기서 문제 발생 >> get메서드가 아니라 post메서드로 보내짐 원래 post여서 그런가봄 >> redirect로 해결
-        return "read.do?postId="+postId;
+        return "redirect:read.do?postId="+postId;
     }
 }

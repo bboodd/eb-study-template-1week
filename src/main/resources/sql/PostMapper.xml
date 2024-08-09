@@ -26,10 +26,13 @@
             post.title,
             post.view_count AS viewCount,
             DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
-            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
+            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate,
+            post.state
         FROM post post
             JOIN category category
                 ON post.category_id = category.category_id
+        WHERE post.state = 1
+        ORDER BY post.post_id DESC
     </select>
 
 <!--    검색 게시글 리스트 가져오기-->
@@ -41,13 +44,14 @@
             post.title,
             post.view_count AS viewCount,
             DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
-            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
+            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate,
+            post.state
         FROM post post
                  JOIN category category
                       ON post.category_id = category.category_id
         <where>
         <if test="startDate != ''">
-            post.create_date >= #{startDate}
+            AND post.create_date >= #{startDate}
         </if>
 
         <if test="endDate != ''">
@@ -60,7 +64,9 @@
         <if test="keyword != ''">
             AND CONCAT(post.title, post.name, post.content) LIKE CONCAT('%', #{keyword}, '%')
         </if>
+        AND post.state = 1
         </where>
+        ORDER BY post.post_id DESC
     </select>
 
 <!--    선택 게시글 가져오기  -->
@@ -69,11 +75,13 @@
             post.post_id AS postId,
             category.category_name AS category,
             post.name,
+            post.password,
             post.title,
             post.content,
             post.view_count AS viewCount,
             DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
-            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
+            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate,
+            post.state
         FROM post post
                  JOIN category category
                       ON post.category_id = category.category_id
@@ -102,4 +110,11 @@
         FROM comment comment
         WHERE comment.post_id = #{postId}
     </select>
+
+<!--    게시글 삭제 구현 ( state를 0으로 만든다 )   -->
+    <update id="deletePost" parameterType="int">
+        UPDATE post
+        SET state = 0
+        WHERE post_id = #{postId}
+    </update>
 </mapper>

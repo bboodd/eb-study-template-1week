@@ -25,4 +25,6 @@ public class PostVo {
     private String createDate;
 
     private String updateDate;
+
+    private int state;
 }

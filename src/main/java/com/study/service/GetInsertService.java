@@ -16,6 +16,6 @@ public class GetInsertService implements HttpService{
 
         log.trace("doService(req, res) invoked");
 
-        return "addPost.jsp";
+        return "redirect:addPost.jsp";
     }
 }

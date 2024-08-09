@@ -16,10 +16,6 @@ public class GetListService implements HttpService {
 
         log.trace("doService(req, res) invoked");
 
-        /**
-         * 비즈니스 로직
-         */
-
         try {
 
             List<PostVo> postList = postDao.selectPostList();
@@ -36,6 +32,6 @@ public class GetListService implements HttpService {
             e.printStackTrace();
         }
 
-        return "board.jsp";
+        return "dispatch:board.jsp";
     }
 }

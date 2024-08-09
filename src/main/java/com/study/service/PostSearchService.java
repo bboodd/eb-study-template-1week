@@ -33,9 +33,6 @@ public class PostSearchService implements HttpService{
         log.info("startDate: " + startDate + " endDate: " + endDate + "categoryId: " + categoryId + " keyword: " + keyword);
         log.info(String.valueOf(searchDto));
 
-        /**
-         * 비즈니스 로직
-         */
 
         try {
 
@@ -54,6 +51,6 @@ public class PostSearchService implements HttpService{
             e.printStackTrace();
         }
 
-        return "board.jsp";
+        return "dispatch:board.jsp";
     }
 }

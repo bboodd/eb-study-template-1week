@@ -28,4 +28,6 @@ public class PostDto {
     String createDate;
 
     String updateDate;
+
+    int state;
 }

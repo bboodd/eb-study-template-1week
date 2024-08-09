@@ -10,6 +10,7 @@ public class UnknownService implements HttpService{
 
         log.trace("doService(req, res) invoked");
 
-        return "/views/text.jsp";
+        //잘못된 서비스 호출 페이지
+        return "redirect:/views/wrongService.jsp";
     }
 }

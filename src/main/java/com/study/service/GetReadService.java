@@ -18,17 +18,17 @@ public class GetReadService implements HttpService{
 
         log.trace("doService(req, res) invoked");
 
-        /**
-         * 비즈니스 로직
-         */
+
+        String postId = request.getParameter("postId");
+
+        PostVo postVo = new PostVo();
+        int viewUpdateResult = 0;
+        List<CommentVo> commentList = new ArrayList<>();
+
+        String view;
+
 
         try {
-
-            String postId = request.getParameter("postId");
-
-            PostVo postVo = new PostVo();
-            int viewUpdateResult = 0;
-            List<CommentVo> commentList = new ArrayList<>();
 
             if(postId != null && !"".equals(postId)){
                 viewUpdateResult = postDao.updatePostViewCount(Integer.parseInt(postId));
@@ -36,8 +36,14 @@ public class GetReadService implements HttpService{
                 commentList = postDao.selectCommentList(Integer.parseInt(postId));
             }
 
-            request.setAttribute("postVo", postVo);
-            request.setAttribute("commentList", commentList);
+            if(postVo.getState() == 0){ //삭제된 페이지를 불러올 경우
+                view = "views/deletePage.jsp";
+            } else{
+                view = "post.jsp";
+
+                request.setAttribute("postVo", postVo);
+                request.setAttribute("commentList", commentList);
+            }
 
             //불러온 댓글 리스트 체크
             //댓글이 없을수도있음
@@ -66,6 +72,6 @@ public class GetReadService implements HttpService{
             e.printStackTrace();
         }
 
-        return "post.jsp";
+        return "dispatch:post.jsp";
     }
 }
