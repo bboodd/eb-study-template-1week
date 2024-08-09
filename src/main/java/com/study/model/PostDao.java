@@ -18,20 +18,12 @@ public class PostDao {
 
         log.trace("insertPost({}) invoked.", postDto);
 
-        SqlSession sqlSession = factory.openSession();
+        SqlSession sqlSession = factory.openSession(true);
         try {
-
             //삽입된 행의 수 반환
             int result = sqlSession.insert("insertPost", postDto);
 
-            if(result == 0){
-                sqlSession.rollback();
-            } else{
-                sqlSession.commit();
-            }
-
             return result;
-
         } catch(Exception e) {
             throw new SQLException(e);
         } finally {
@@ -45,9 +37,6 @@ public class PostDao {
 
     //카테고리 리스트 읽어오기
     public List<CategoryVo> selectCategoryList() throws Exception {
-
-        log.trace("selectCategoryList() invoked");
-
         SqlSession sqlSession = factory.openSession();
         try {
             //카테고리id를 리스트로 반환
@@ -64,8 +53,6 @@ public class PostDao {
 
     //전체 게시글 목록 리스트 읽어오기
     public List<PostVo> selectPostList() throws Exception {
-        log.trace("selectPostList() invoked");
-
         SqlSession sqlSession = factory.openSession();
         try {
             //게시글을 리스트로 반환
@@ -81,8 +68,6 @@ public class PostDao {
 
     //검색 게시글 목록 리스트 읽어오기
     public List<PostVo> selectSearchPostList(SearchDto searchDto) throws Exception {
-        log.trace("selectSearchPostList({}) invoked", searchDto);
-
         SqlSession sqlSession = factory.openSession();
         try {
             //검색된 게시글을 리스트로 반환
@@ -98,8 +83,6 @@ public class PostDao {
 
     //게시글 Id로 읽어오기
     public PostVo selectPostById(int postId) throws Exception {
-        log.trace("selectPostById({}) invoked", postId);
-
         SqlSession sqlSession = factory.openSession();
         try {
             //검색된 게시글을 Vo로 반환
@@ -115,19 +98,11 @@ public class PostDao {
 
     //게시글 조회수 1 증가
     public int updatePostViewCount(int postId) throws Exception {
-        log.trace("updatePostViewCount({}) invoked", postId);
-
-        SqlSession sqlSession = factory.openSession();
+        SqlSession sqlSession = factory.openSession(true);
         try {
             //조회수 증가시 1 반환
             //실패시 0 반환
             int result = sqlSession.update("updatePostViewCount", postId);
-
-            if(result == 0){
-                sqlSession.rollback();
-            } else{
-                sqlSession.commit();
-            }
 
             return result;
         } catch (Exception e){
@@ -139,19 +114,10 @@ public class PostDao {
 
     //댓글 추가
     public int insertComment(CommentDto commentDto) throws Exception {
-
-        log.trace("insertComment({}) invoked.", commentDto);
-
-        SqlSession sqlSession = factory.openSession();
+        SqlSession sqlSession = factory.openSession(true);
         try {
             //삽입된 행의 수 반환
             int result = sqlSession.insert("insertComment", commentDto);
-
-            if(result == 0){
-                sqlSession.rollback();
-            } else{
-                sqlSession.commit();
-            }
 
             return result;
 
@@ -164,8 +130,6 @@ public class PostDao {
 
     //postId에 대한 댓글 리스트 가져오기
     public List<CommentVo> selectCommentList(int postId) throws Exception {
-        log.trace("selectCommentList({}) invoked", postId);
-
         SqlSession sqlSession = factory.openSession();
         try {
             //검색된 게시글을 리스트로 반환
@@ -181,19 +145,11 @@ public class PostDao {
 
     //게시물 삭제
     public int deletePost(int postId) throws Exception {
-        log.trace("deletePost({}) invoked", postId);
-
-        SqlSession sqlSession = factory.openSession();
+        SqlSession sqlSession = factory.openSession(true);
         try {
             //삭제 성공시 1 반환
             //실패시 0 반환
             int result = sqlSession.update("deletePost", postId);
-
-            if(result == 0){
-                sqlSession.rollback();
-            } else{
-                sqlSession.commit();
-            }
 
             return result;
         } catch (Exception e){
