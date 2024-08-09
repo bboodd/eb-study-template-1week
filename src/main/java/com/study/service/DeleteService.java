@@ -12,9 +12,6 @@ public class DeleteService implements HttpService{
     private final PostDao postDao = new PostDao();
 
     public String doService(HttpServletRequest request, HttpServletResponse response){
-
-        log.trace("doService(req, res) invoked");
-
         String postId = request.getParameter("postId");
         String inputPassword = request.getParameter("inputPassword");
         String password = request.getParameter("password");

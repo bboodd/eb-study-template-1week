@@ -12,12 +12,8 @@ public class PostCommentService implements HttpService{
 
 //    TODO: 비동기로 구현
     public String doService(HttpServletRequest request, HttpServletResponse response){
-
-        log.trace("doService(req, res) invoked");
-
         String postId = request.getParameter("postId");
         String comment = request.getParameter("comment");
-
         CommentDto commentDto = new CommentDto();
 
         if(postId != null && !"".equals(postId)){
@@ -34,11 +30,8 @@ public class PostCommentService implements HttpService{
             // 자동으로 값이 들어간 Id를 추출한다.
             int resultId= commentDto.getCommentId();
 
-            if(resultId != 0) {
-                log.info(resultId + "번 댓글 추가");
-            } else {
-                log.info("댓글 추가 실패");
-            }
+            log.info(resultId != 0 ? resultId + "번 댓글 추가" : "댓글 추가 실패");
+
         } catch (Exception e) {
             log.info("insert err: " + e.getMessage());
             e.printStackTrace();

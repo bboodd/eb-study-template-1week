@@ -13,9 +13,6 @@ public class GetInsertService implements HttpService{
     private final PostDao postDao = new PostDao();
 
     public String doService(HttpServletRequest request, HttpServletResponse response){
-
-        log.trace("doService(req, res) invoked");
-
         return "redirect:addPost.jsp";
     }
 }
