@@ -30,6 +30,10 @@ public class PostInsertService implements HttpService{
         if(title != null && !"".equals(title)) {postDto.setTitle(title);}
         if(content != null && !"".equals(content)) {postDto.setContent(content);}
 
+        /**
+         * 비즈니스 로직
+         */
+
         try {
             postValidator.validate(postDto); //db에 넣기 전 dto 검증
             postDao.insertPost(postDto);

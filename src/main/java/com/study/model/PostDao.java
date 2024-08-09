@@ -98,4 +98,91 @@ public class PostDao {
             throw new SQLException(e);
         }
     }
+
+    //게시글 Id로 읽어오기
+    public PostVo selectPostById(int postId) throws Exception {
+        log.trace("selectPostById({}) invoked", postId);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //검색된 게시글을 Vo로 반환
+            PostVo postVo = sqlSession.selectOne("selectPostById", postId);
+
+            sqlSession.close();
+
+            return postVo;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    //게시글 조회수 1 증가
+    public int updatePostViewCount(int postId) throws Exception {
+        log.trace("updatePostViewCount({}) invoked", postId);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //조회수 증가시 1 반환
+            //실패시 0 반환
+            int result = sqlSession.update("updatePostViewCount", postId);
+
+            if(result == 0){
+                sqlSession.rollback();
+            } else{
+                sqlSession.commit();
+            }
+
+            sqlSession.close();
+
+            return result;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
+
+    //댓글 추가
+    public int insertComment(CommentDto commentDto) throws Exception {
+
+        log.trace("insertComment({}) invoked.", commentDto);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //삽입된 행의 수 반환
+            int result = sqlSession.insert("insertComment", commentDto);
+
+            if(result == 0){
+                sqlSession.rollback();
+            } else{
+                sqlSession.commit();
+            }
+
+            sqlSession.close();
+
+            return result;
+
+        } catch(Exception e) {
+            throw new SQLException(e);
+        }
+    }
+
+    //postId에 대한 댓글 리스트 가져오기
+    public List<CommentVo> selectCommentList(int postId) throws Exception {
+        log.trace("selectCommentList({}) invoked", postId);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //검색된 게시글을 리스트로 반환
+            List<CommentVo> list = sqlSession.selectList("selectCommentList", postId);
+
+            sqlSession.close();
+
+            return list;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
 }
