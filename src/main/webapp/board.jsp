@@ -63,6 +63,7 @@
                     <button type="submit">검색</button>
                 </div>
                 <script>
+<%--                    검색 후 리다이렉트 시 검색어 가지고 있기    --%>
                 <%
                     if(request.getAttribute("searchDto") != null){
                         SearchDto searchDto = (SearchDto) request.getAttribute("searchDto");

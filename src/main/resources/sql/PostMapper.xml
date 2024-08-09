@@ -87,4 +87,19 @@
         SET view_count = view_count + 1
         WHERE post_id = #{postId}
     </update>
+
+<!--    댓글 추가  -->
+    <insert id="insertComment" parameterType="com.study.model.CommentDto" useGeneratedKeys="true" keyProperty="commentId">
+        INSERT INTO comment(post_id, content)
+        VALUES (#{postId}, #{content})
+    </insert>
+
+<!--    postId에 해당하는 댓글 리스트로 불러오기  -->
+    <select id="selectCommentList" parameterType="int" resultType="com.study.model.CommentVo">
+        SELECT
+            comment.content,
+            DATE_FORMAT(comment.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate
+        FROM comment comment
+        WHERE comment.post_id = #{postId}
+    </select>
 </mapper>

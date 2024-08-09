@@ -27,6 +27,7 @@ public class BoardControllerServlet extends HttpServlet {
         commandMap.put("PUT:update", new WriteService() );
         commandMap.put("DELETE:delete", new WriteService() );
         commandMap.put("POST:search", new PostSearchService() );
+        commandMap.put("POST:comment", new PostCommentService() );
         commandMap.put("Unknown", new UnknownService() );
     }
 
@@ -41,7 +42,11 @@ public class BoardControllerServlet extends HttpServlet {
 
         //TODO: view 문자열 분석해서 dispatch 혹은 redirect
 
-        if(true){
+        String end = view.substring(view.length()-4, view.length());
+
+        log.info("넘어온 view 문자열은: {}", end);
+
+        if(end.equals(".jsp")){
             RequestDispatcher requestDispatcher = request.getRequestDispatcher(view);
             requestDispatcher.forward(request, response);
         } else{
@@ -56,6 +61,7 @@ public class BoardControllerServlet extends HttpServlet {
         String requestUri = request.getRequestURI();
         String contextPath = request.getContextPath();
         String requestUrl = request.getRequestURL().toString();
+        String queryString = request.getQueryString();
 
         log.info("\t + 0. contextPath : {}", contextPath); // /maven01 or /myapp
 
@@ -73,6 +79,8 @@ public class BoardControllerServlet extends HttpServlet {
 
         // command는 contextPath가 그냥 루트일 경우 URI와 동일하게 나온다.
 
+        log.info("\t + 5. queryString : {}", queryString); //
+
         HttpService service =
 
         switch (method) {
@@ -87,6 +95,7 @@ public class BoardControllerServlet extends HttpServlet {
                 switch (requestUri) {
                     case "/insert.do"-> commandMap.get("POST:insert");
                     case "/search.do" -> commandMap.get("POST:search");
+                    case "/comment.do" -> commandMap.get("POST:comment");
                     default -> commandMap.get("Unknown"); //오류페이지 오출
                 };
             case "PUT"->

@@ -141,4 +141,48 @@ public class PostDao {
             throw new SQLException(e);
         }
     }
+
+    //댓글 추가
+    public int insertComment(CommentDto commentDto) throws Exception {
+
+        log.trace("insertComment({}) invoked.", commentDto);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //삽입된 행의 수 반환
+            int result = sqlSession.insert("insertComment", commentDto);
+
+            if(result == 0){
+                sqlSession.rollback();
+            } else{
+                sqlSession.commit();
+            }
+
+            sqlSession.close();
+
+            return result;
+
+        } catch(Exception e) {
+            throw new SQLException(e);
+        }
+    }
+
+    //postId에 대한 댓글 리스트 가져오기
+    public List<CommentVo> selectCommentList(int postId) throws Exception {
+        log.trace("selectCommentList({}) invoked", postId);
+
+        try {
+            SqlSession sqlSession = factory.openSession();
+
+            //검색된 게시글을 리스트로 반환
+            List<CommentVo> list = sqlSession.selectList("selectCommentList", postId);
+
+            sqlSession.close();
+
+            return list;
+        } catch (Exception e){
+            throw new SQLException(e);
+        }
+    }
 }

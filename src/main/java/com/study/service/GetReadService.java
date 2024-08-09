@@ -1,10 +1,14 @@
 package com.study.service;
 
+import com.study.model.CommentVo;
 import com.study.model.PostDao;
 import com.study.model.PostVo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class GetReadService implements HttpService{
@@ -23,14 +27,25 @@ public class GetReadService implements HttpService{
             String postId = request.getParameter("postId");
 
             PostVo postVo = new PostVo();
-            int result = 0;
+            int viewUpdateResult = 0;
+            List<CommentVo> commentList = new ArrayList<>();
 
             if(postId != null && !"".equals(postId)){
-                result = postDao.updatePostViewCount(Integer.parseInt(postId));
+                viewUpdateResult = postDao.updatePostViewCount(Integer.parseInt(postId));
                 postVo = postDao.selectPostById(Integer.parseInt(postId));
+                commentList = postDao.selectCommentList(Integer.parseInt(postId));
             }
 
             request.setAttribute("postVo", postVo);
+            request.setAttribute("commentList", commentList);
+
+            //불러온 댓글 리스트 체크
+            //댓글이 없을수도있음
+            if(commentList != null){
+                log.info("댓글 리스트 불러오기 성공");
+            } else{
+                log.info("댓글 리스트 불러오기 실패");
+            }
 
             //불러온 게시글의 id체크
             if(postVo.getPostId() != 0) {
@@ -40,7 +55,7 @@ public class GetReadService implements HttpService{
             }
 
             //조회수 증가시 1 아닐시 0
-            if(result != 0){
+            if(viewUpdateResult != 0){
                 log.info("조회수 1 증가");
             } else {
                 log.info("조회수 증가 실패");
