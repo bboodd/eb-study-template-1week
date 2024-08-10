@@ -19,24 +19,27 @@ public class PostInsertService implements HttpService{
         String title = request.getParameter("title");
         String content = request.getParameter("content");
 
-        String view = "redirect:addPost.jsp";
+        String view = "redirect:insert.do";
 
         try {
-            inputPostValidator.validate(categoryId, name, password, title, content); //화면에서 받아온 값 null, 빈값 체크
-            PostDto postDto = PostDto.builder()
-                    .categoryId(Integer.parseInt(categoryId))
-                    .name(name)
-                    .password(password)
-                    .title(title)
-                    .content(content)
-                    .build();
+            int result = 0;
 
-            //실패시 0 반환
-            int result = postDao.insertPost(postDto);
+            if(inputPostValidator.validate(categoryId, name, password, title, content)){
+                PostDto postDto = PostDto.builder()
+                        .categoryId(Integer.parseInt(categoryId))
+                        .name(name)
+                        .password(password)
+                        .title(title)
+                        .content(content)
+                        .build();
+
+                //실패시 0 반환
+                result = postDao.insertPost(postDto);   //화면에서 받아온 값 null, 빈값 체크
+            }
 
             log.info(result != 0 ? "게시글 추가" : "게시글 추가 실패");
 
-            if(result != 0) view = "list.do";
+            if(result != 0) view = "redirect:list.do";
 
         } catch (Exception e) {
             log.info("insert err: " + e.getMessage());

@@ -19,7 +19,7 @@ public class GetReadService implements HttpService{
         PostVo postVo = new PostVo();
         int viewUpdateResult = 0;
         List<CommentVo> commentList = new ArrayList<>();
-        String view = "dispatch:post.jsp";
+        String view = "dispatch:WEB-INF/jsp/post.jsp";
 
         try {
             if(postId != null && !"".equals(postId)){
@@ -29,7 +29,8 @@ public class GetReadService implements HttpService{
             }
 
             if(postVo.getState() == 0){ //삭제된 페이지를 불러올 경우
-                view = "redirect:views/deletePost.jsp";
+                // TODO: 404 호출해야함
+                view = "redirect:errPages/deletePost.jsp";
             } else{
                 request.setAttribute("postVo", postVo);
                 request.setAttribute("commentList", commentList);

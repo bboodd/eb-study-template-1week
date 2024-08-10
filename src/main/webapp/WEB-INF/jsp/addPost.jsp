@@ -1,12 +1,7 @@
 <%@ page import="com.study.model.PostDto" %>
 <%@ page import="com.study.model.CategoryVo" %>
-<%@ page import="java.util.List" %><%--
-  Created by IntelliJ IDEA.
-  User: gimhaghyeon
-  Date: 8/6/24
-  Time: 09:33
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="java.util.List" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <jsp:useBean id="postDao" class="com.study.model.PostDao"/>
 <html>
@@ -15,18 +10,10 @@
 </head>
 <body>
 
-<div>
-    <h1> super app </h1>
-</div>
+<c:out value="Hello World" />
 
 <div>
-    <%
-        if(request.getAttribute("post") != null){
-            PostDto p = (PostDto)request.getAttribute("post");
-            out.println("<p>post '" + p + "' added!</p>");
-            out.println("<p>title '" + p.getTitle() + "'</p>");
-        }
-    %>
+    <h1> super app </h1>
 </div>
 
 <div>

@@ -22,16 +22,18 @@ public class PostDao {
         int result = 0;
 
         try {
-            insertPostValidator.validate(postDto);
-            PostVo postVo = PostVo.builder()
-                    .categoryId(postDto.getCategoryId())
-                    .name(postDto.getName())
-                    .password(postDto.getPassword())
-                    .title(postDto.getTitle())
-                    .content(postDto.getContent())
-                    .build();
-            //삽입된 행의 수 반환
-            result = sqlSession.insert("insertPost", postVo);
+
+            if(insertPostValidator.validate(postDto)){
+                PostVo postVo = PostVo.builder()
+                        .categoryId(postDto.getCategoryId())
+                        .name(postDto.getName())
+                        .password(postDto.getPassword())
+                        .title(postDto.getTitle())
+                        .content(postDto.getContent())
+                        .build();
+                //삽입된 행의 수 반환
+                result = sqlSession.insert("insertPost", postVo);
+            }
 
         } catch(Exception e) {
             log.info("에러메세지: " + e.getMessage());

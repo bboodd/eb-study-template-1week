@@ -43,6 +43,6 @@ public class GetListService implements HttpService {
             e.printStackTrace();
         }
 
-        return "dispatch:board.jsp";
+        return "dispatch:WEB-INF/jsp/board.jsp";
     }
 }
