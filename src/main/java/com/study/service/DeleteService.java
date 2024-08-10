@@ -17,12 +17,13 @@ public class DeleteService implements HttpService{
         String password = request.getParameter("password");
         String view = "redirect:read.do?postId="+postId;
 
+        // TODO:유효성 검증 해야함
         if(inputPassword != null && !"".equals(inputPassword) && password != null && !"".equals(password)){
 
             try {
 
                 int deleteResult = 0;
-                if(postId != null && !"".equals(postId)){
+                if(postId != null && !"".equals(postId) && password.equals(inputPassword)){
                     deleteResult = postDao.deletePost(Integer.parseInt(postId));
                 }
 

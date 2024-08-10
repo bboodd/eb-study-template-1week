@@ -1,17 +1,10 @@
-<%@ page import="com.study.model.PostDto" %>
-<%@ page import="com.study.model.CategoryVo" %>
-<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="postDao" class="com.study.model.PostDao"/>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-
-<c:out value="Hello World" />
-
 <div>
     <h1> super app </h1>
 </div>
@@ -23,17 +16,11 @@
 <form method="post" action="insert.do">
     <label>Category:
         <select type='number' name='categoryId'>
-            <%
-                List<CategoryVo> categoryList = postDao.selectCategoryList();
-                if(categoryList == null || categoryList.size() == 0) {
-            %>
-            <option>카테고리를 찾을 수 없음</option>
-            <%  } else {
-                    for(CategoryVo vo : categoryList){
-                        out.println("<option value='" + vo.getCategoryId() + "'>" + vo.getCategoryName() + "</option>");
-                    }
-                }
-            %>
+            <c:if test="${categoryList.size() != 0}">
+                <c:forEach var="category" items="${categoryList}">
+                    <option value="${category.categoryId}">${category.categoryName}</option>
+                </c:forEach>
+            </c:if>
         </select>
     </label>
 

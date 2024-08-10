@@ -1,6 +1,7 @@
 package com.study.service;
 
 import com.study.model.CommentDto;
+import com.study.model.CommentVo;
 import com.study.model.PostDao;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,23 +15,19 @@ public class PostCommentService implements HttpService{
     public String doService(HttpServletRequest request, HttpServletResponse response){
         String postId = request.getParameter("postId");
         String comment = request.getParameter("comment");
-        CommentDto commentDto = new CommentDto();
-
-        if(postId != null && !"".equals(postId)){
-            commentDto.setPostId(Integer.parseInt(postId));
-        }
-        if(comment != null && !"".equals(comment)){
-            commentDto.setContent(comment);
-        }
+        // TODO: 지금 빈 값도 들어감 유효성 검증 해야함
 
         try {
-            // TODO: 검증하기
-            postDao.insertComment(commentDto);
+            //dto to vo
+            CommentDto commentDto = CommentDto.builder()
+                    .postId(Integer.parseInt(postId))
+                    .content(comment)
+                    .build();
 
-            // 자동으로 값이 들어간 Id를 추출한다.
-            int resultId= commentDto.getCommentId();
+            //실패시 0 반환
+            int result = postDao.insertComment(commentDto);
 
-            log.info(resultId != 0 ? resultId + "번 댓글 추가" : "댓글 추가 실패");
+            log.info(result != 0 ? "댓글 추가" : "댓글 추가 실패");
 
         } catch (Exception e) {
             log.info("insert err: " + e.getMessage());

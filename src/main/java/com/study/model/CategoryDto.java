@@ -6,13 +6,7 @@ import lombok.*;
 @NoArgsConstructor(force = true)
 @Data
 @Builder
-public class SearchDto {
-
-    String startDate;
-
-    String endDate;
-
+public class CategoryDto {
     int categoryId;
-
-    String keyword;
+    String categoryName;
 }

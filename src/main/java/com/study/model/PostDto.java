@@ -14,6 +14,8 @@ public class PostDto {
 
     int categoryId;
 
+    String categoryName;
+
     String name;
 
     String password;

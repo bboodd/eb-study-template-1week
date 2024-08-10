@@ -30,7 +30,7 @@ public class InsertPostValidator {
             // TODO: db에 있는 카테고리 값이랑 비교?
             if(categoryId == 0){
                 flag = false;
-                throw new IllegalArgumentException("카테고리 값은 필수 입니다.");
+                throw new IllegalArgumentException("잘못된 카테고리 값");
             }
         } catch (Exception e){
             log.info("에러메세지: " + e.getMessage());

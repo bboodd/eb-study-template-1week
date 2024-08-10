@@ -1,6 +1,7 @@
 package com.study.model;
 
 import com.study.config.MybatisConfig;
+import com.study.mapper.PostMapper;
 import com.study.model.PostDto;
 import com.study.validate.InsertPostValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,6 @@ public class PostDao {
         int result = 0;
 
         try {
-
             if(insertPostValidator.validate(postDto)){
                 PostVo postVo = PostVo.builder()
                         .categoryId(postDto.getCategoryId())
@@ -31,6 +31,7 @@ public class PostDao {
                         .title(postDto.getTitle())
                         .content(postDto.getContent())
                         .build();
+
                 //삽입된 행의 수 반환
                 result = sqlSession.insert("insertPost", postVo);
             }
@@ -47,36 +48,46 @@ public class PostDao {
     //카테고리 리스트 읽어오기
     public List<CategoryVo> selectCategoryList() throws Exception {
         SqlSession sqlSession = factory.openSession();
-        List<CategoryVo> list = new ArrayList<>();
+        List<CategoryVo> voList = new ArrayList<>();
 
+        // TODO: db에서 나오고 유효성 검증?
         try {
-            //카테고리id를 리스트로 반환
-            list = sqlSession.selectList("selectCategoryList");
+            //카테고리를 vo리스트로 반환
+            voList = sqlSession.selectList("selectCategoryList");
 
         } catch(Exception e) {
             log.info("에러메세지: " + e.getMessage());
             e.printStackTrace();
         } finally {
             sqlSession.close();
-            return list;
+            return voList;
         }
     }
 
     //전체 게시글 목록 리스트 읽어오기
     public List<PostVo> selectPostList(SearchDto searchDto) throws Exception {
         SqlSession sqlSession = factory.openSession();
-        List<PostVo> list = new ArrayList<PostVo>();
+        List<PostVo> voList = new ArrayList<>();
 
+        // TODO: 검색조건 유효성검증?
         try {
-            //게시글을 리스트로 반환
-            list = sqlSession.selectList("selectPostList", searchDto);
+            //dto to vo
+            SearchVo searchVo = SearchVo.builder()
+                    .startDate(searchDto.getStartDate())
+                    .endDate(searchDto.getEndDate())
+                    .categoryId(searchDto.getCategoryId())
+                    .keyword(searchDto.getKeyword())
+                    .build();
+
+            //게시글을 vo리스트로 반환
+            voList = sqlSession.selectList("selectPostList", searchVo);
 
         } catch(Exception e) {
             log.info("에러메세지: " + e.getMessage());
             e.printStackTrace();
         } finally {
             sqlSession.close();
-            return list;
+            return voList;
         }
     }
 
@@ -84,6 +95,7 @@ public class PostDao {
     public PostVo selectPostById(int postId) throws Exception {
         SqlSession sqlSession = factory.openSession();
         PostVo postVo = new PostVo();
+        // TODO: 유효성검증
         try {
             //검색된 게시글을 Vo로 반환
             postVo = sqlSession.selectOne("selectPostById", postId);
@@ -103,6 +115,7 @@ public class PostDao {
         SqlSession sqlSession = factory.openSession(true);
         int result = 0;
         try {
+            // TODO: 유효성검증
             //조회수 증가시 1 반환
             //실패시 0 반환
             result = sqlSession.update("updatePostViewCount", postId);
@@ -123,9 +136,16 @@ public class PostDao {
         int result = 0;
 
         try {
-            //삽입된 행의 수 반환
-            result = sqlSession.insert("insertComment", commentDto);
+            // TODO: 유효성 검증
 
+            //dto to vo
+            CommentVo commentVo = CommentVo.builder()
+                    .postId(commentDto.getPostId())
+                    .content(commentDto.getContent())
+                    .build();
+
+            //삽입된 행의 수 반환
+            result = sqlSession.insert("insertComment", commentVo);
 
         } catch(Exception e) {
             log.info("에러메세지: " + e.getMessage());

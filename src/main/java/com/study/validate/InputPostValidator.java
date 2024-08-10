@@ -6,9 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InputPostValidator {
     boolean flag = true;
+    String numberRegex = "[+-]?\\d*(\\.\\d+)?";
 
     public boolean validate(String categoryId, String name, String password, String title,String content) {
-        categoryValidate(categoryId);
+        categoryIdValidate(categoryId);
         nameValidate(name);
         passwordValidate(password);
         titleValidate(title);
@@ -16,12 +17,15 @@ public class InputPostValidator {
         return flag;
     }
 
-    private void categoryValidate(String categoryId){
+    private void categoryIdValidate(String categoryId){
         try {
-            int cId = Integer.parseInt(categoryId);
-            if(cId == 0){
+            if(categoryId == null || !"".equals(categoryId)){
                 flag = false;
                 throw new IllegalArgumentException("카테고리 값은 필수 입니다.");
+            }
+            if(!categoryId.matches(numberRegex)){
+                flag = false;
+                throw new IllegalArgumentException("카테고리 오류");
             }
         } catch (Exception e){
             log.info("에러메세지: " + e.getMessage());

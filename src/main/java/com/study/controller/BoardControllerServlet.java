@@ -25,9 +25,10 @@ public class BoardControllerServlet extends HttpServlet {
         commandMap.put("POST/insert.do", new PostInsertService() );
 //        commandMap.put("GET/update.do", new WriteService() );
 //        commandMap.put("PUT/update.do", new WriteService() );
-        commandMap.put("GET/delete.do", new DeleteService() );
+        commandMap.put("POST/delete.do", new DeleteService() );
         commandMap.put("POST/comment.do", new PostCommentService() );
-        commandMap.put("Unknown", new UnknownService() );
+        commandMap.put("GET/unknown.do", new UnknownService() );
+        commandMap.put("POST/unknown.do", new UnknownService() );
     }
 
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

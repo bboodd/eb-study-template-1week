@@ -1,12 +1,11 @@
 package com.study.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-@Getter
-@Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Data
+@Builder
 public class CommentDto {
 
     int commentId;
