@@ -3,6 +3,7 @@ package com.study.controller;
 import com.study.service.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,11 @@ import java.util.HashMap;
 
 @Slf4j
 @WebServlet("*.do")
+@MultipartConfig(
+        location="/Users/gimhaghyeon/Desktop/upload",
+        maxFileSize = 1* 1024 * 1024 * 20, 		// 최대 파일크기 : 20MB
+        maxRequestSize = 1 * 1024 * 1024 * 20	// 한 요청 당 최대 크기 : 20MB
+)
 public class BoardControllerServlet extends HttpServlet {
 
     HashMap<String, HttpService> commandMap = new HashMap<>();
@@ -28,6 +34,7 @@ public class BoardControllerServlet extends HttpServlet {
         commandMap.put("POST/delete.do", new DeleteService() );
         commandMap.put("POST/comment.do", new PostCommentService() );
         commandMap.put("GET/unknown.do", new UnknownService() );
+        commandMap.put("GET/download.do", new DownloadService() );
         commandMap.put("POST/unknown.do", new UnknownService() );
     }
 

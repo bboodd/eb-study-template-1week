@@ -24,4 +24,10 @@ public interface PostMapper {
     List<CommentVo> selectCommentList(int postId);
 
     void deletePost(int postId);
+
+    int insertFile(FileVo fileVo);
+
+    List<FileVo> selectFileList(int postId);
+
+    FileVo selectFile(int fileId);
 }

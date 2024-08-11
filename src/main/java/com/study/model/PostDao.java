@@ -20,7 +20,7 @@ public class PostDao {
     //게시글 추가
     public int insertPost(PostDto postDto) throws Exception{
         SqlSession sqlSession = factory.openSession(true);
-        int result = 0;
+        int resultId = 0;
 
         try {
             if(insertPostValidator.validate(postDto)){
@@ -32,8 +32,9 @@ public class PostDao {
                         .content(postDto.getContent())
                         .build();
 
-                //삽입된 행의 수 반환
-                result = sqlSession.insert("insertPost", postVo);
+                //삽입된 게시글의 id반환
+                sqlSession.insert("insertPost", postVo);
+                resultId = postVo.getPostId();
             }
 
         } catch(Exception e) {
@@ -41,7 +42,7 @@ public class PostDao {
             e.printStackTrace();
         } finally {
             sqlSession.close();
-            return result;
+            return resultId;
         }
     }
 
@@ -193,6 +194,69 @@ public class PostDao {
         } finally {
             sqlSession.close();
             return result;
+        }
+    }
+
+    //파일 추가
+    public int insertFileList(List<FileDto> fileList) throws Exception {
+        SqlSession sqlSession = factory.openSession(true);
+        int result = 0;
+
+        try {
+            for(FileDto fileDto : fileList){
+                FileVo fileVo = FileVo.builder()
+                        .postId(fileDto.getPostId())
+                        .fileOriginalName(fileDto.getFileOriginalName())
+                        .fileName(fileDto.getFileName())
+                        .filePath(fileDto.getFilePath())
+                        .fileSize(fileDto.getFileSize())
+                        .build();
+                result += sqlSession.insert("insertFile", fileVo);
+            }
+        } catch(Exception e) {
+            log.info("에러메세지: " + e.getMessage());
+            e.printStackTrace();
+
+        } finally {
+            sqlSession.close();
+            return result;
+        }
+    }
+
+    //postId에 대한 파일 리스트 가져오기
+    public List<FileVo> selectFileList(int postId) throws Exception {
+        SqlSession sqlSession = factory.openSession();
+        List<FileVo> list = new ArrayList<>();
+
+        try {
+            //검색된 게시글을 리스트로 반환
+            list = sqlSession.selectList("selectFileList", postId);
+
+        } catch(Exception e) {
+            log.info("에러메세지: " + e.getMessage());
+            e.printStackTrace();
+
+        } finally {
+            sqlSession.close();
+            return list;
+        }
+    }
+
+    //fileId에 대한 파일 가져오기
+    public FileVo selectFile(int fileId) throws Exception {
+        SqlSession sqlSession = factory.openSession();
+        FileVo fileVo = new FileVo();
+
+        try {
+            fileVo = sqlSession.selectOne("selectFile", fileId);
+
+        } catch(Exception e) {
+            log.info("에러메세지: " + e.getMessage());
+            e.printStackTrace();
+
+        } finally {
+            sqlSession.close();
+            return fileVo;
         }
     }
 }

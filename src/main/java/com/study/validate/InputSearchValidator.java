@@ -45,7 +45,7 @@ public class InputSearchValidator {
 
     private void categoryIdValidate(String categoryId){
         try {
-            if(categoryId == null || "".equals(categoryId)){
+            if(categoryId == null){
                 flag = false;
                 throw new IllegalArgumentException("카테고리 값 null");
             }

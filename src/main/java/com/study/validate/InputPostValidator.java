@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class InputPostValidator {
+    // TODO: 먹통됨 왜그러지?? --> !"".equals(something) < 안됨
     boolean flag = true;
     String numberRegex = "[+-]?\\d*(\\.\\d+)?";
 
@@ -19,7 +20,7 @@ public class InputPostValidator {
 
     private void categoryIdValidate(String categoryId){
         try {
-            if(categoryId == null || !"".equals(categoryId)){
+            if(categoryId == null || categoryId.isBlank()){
                 flag = false;
                 throw new IllegalArgumentException("카테고리 값은 필수 입니다.");
             }
@@ -35,7 +36,7 @@ public class InputPostValidator {
 
     private void nameValidate(String name){
         try {
-            if(name == null || !"".equals(name)){
+            if(name == null || name.isBlank()){
                 flag = false;
                 throw new IllegalArgumentException("이름을 입력해야 합니다.");
             }
@@ -48,7 +49,7 @@ public class InputPostValidator {
 
     private void passwordValidate(String password){
         try {
-            if(password == null || !"".equals(password)){
+            if(password == null || password.isBlank()){
                 flag = false;
                 throw new IllegalArgumentException("비밀번호를 입력해야 합니다.");
             }
@@ -61,7 +62,7 @@ public class InputPostValidator {
 
     private void titleValidate(String title){
         try {
-            if(title == null || !"".equals(title)){
+            if(title == null || title.isBlank()){
                 flag = false;
                 throw new IllegalArgumentException("제목을 입력해야 합니다.");
             }
@@ -74,7 +75,7 @@ public class InputPostValidator {
 
     private void contentValidate(String content){
         try {
-            if(content == null || !"".equals(content)){
+            if(content == null || content.isBlank()){
                 flag = false;
                 throw new IllegalArgumentException("내용을 입력해야 합니다.");
             }

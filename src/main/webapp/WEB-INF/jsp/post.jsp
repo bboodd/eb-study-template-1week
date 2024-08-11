@@ -32,6 +32,19 @@
         </div>
     </c:if>
 </div>
+
+<%--저장된 파일--%>
+<div>
+
+</div>
+    <c:if test="${fileList != null}">
+        <c:forEach var="file" items="${fileList}">
+            <a href='download.do?fileId="${file.fileId}"&postId="${file.postId}"'>
+                ${file.fileOriginalName}
+            </a><br />
+        </c:forEach>
+
+    </c:if>
 <div>
     <%--댓글--%>
     <c:if test="${commentList != null}">

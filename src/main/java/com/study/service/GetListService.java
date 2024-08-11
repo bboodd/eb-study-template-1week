@@ -1,6 +1,7 @@
 package com.study.service;
 
 import com.study.model.*;
+import com.study.validate.InputSearchValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import java.util.List;
 @Slf4j
 public class GetListService implements HttpService {
     private final PostDao postDao = new PostDao();
+    private final InputSearchValidator inputSearchValidator = new InputSearchValidator();
 
     public String doService(HttpServletRequest request, HttpServletResponse response){
         String startDate = request.getParameter("startDate");
@@ -18,23 +20,14 @@ public class GetListService implements HttpService {
         String categoryId = request.getParameter("categoryId");
         String keyword = request.getParameter("keyword");
 
-        // TODO:new dto를 하면 기본값은 null인데 null 체크를 해야하나? >> builder 쓰면 될듯
+        // TODO:new dto를 하면 기본값은 null인데 null 체크를 해야하나? >> builder 쓰면 될듯 >> null체크 필요함
 
         log.info("startDate: " + startDate + " endDate: " + endDate + "categoryId: " + categoryId + " keyword: " + keyword);
 
         try {
             SearchDto searchDto = new SearchDto();
 
-            if(categoryId == null){
-                //인덱스페이지 요청
-                SearchDto firstSearchDto = SearchDto.builder()
-                        .startDate("")
-                        .endDate("")
-                        .categoryId(0)
-                        .keyword("")
-                        .build();
-                searchDto = firstSearchDto;
-            } else{
+            if(inputSearchValidator.validate(startDate, endDate, categoryId, keyword)){
                 // TODO: 검증해야할듯
                 SearchDto inputSearchDto = SearchDto.builder()
                         .startDate(startDate)
@@ -43,6 +36,15 @@ public class GetListService implements HttpService {
                         .keyword(keyword)
                         .build();
                 searchDto = inputSearchDto;
+            } else{
+                //인덱스페이지 요청
+                SearchDto firstSearchDto = SearchDto.builder()
+                        .startDate("")
+                        .endDate("")
+                        .categoryId(0)
+                        .keyword("")
+                        .build();
+                searchDto = firstSearchDto;
             }
 
             List<PostVo> postVoList = postDao.selectPostList(searchDto);

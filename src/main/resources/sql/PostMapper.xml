@@ -99,4 +99,38 @@
         SET state = 0
         WHERE post_id = #{postId}
     </update>
+
+<!--    파일 업로드  -->
+    <insert id="insertFile" parameterType="com.study.model.FileVo" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO file(post_id, file_original_name, file_name, file_path, file_size)
+        VALUES (#{postId}, #{fileOriginalName}, #{fileName}, #{filePath}, #{fileSize})
+    </insert>
+
+<!--    postId에 해당하는 파일 리스트 가져오기   -->
+    <select id="selectFileList" parameterType="int" resultType="com.study.model.FileVo">
+        SELECT
+            file.file_id AS fileId,
+            file.post_id AS postId,
+            file.file_original_name AS fileOriginalName,
+            file.file_name AS fileName,
+            file.file_path AS filePath,
+            file.file_size AS fileSize
+        FROM
+            file file
+        WHERE
+            file.post_id = ${postId}
+    </select>
+
+<!--    파일 id에 해당하는 파일 가져오기  -->
+    <select id="selectFile" parameterType="int" resultType="com.study.model.FileVo">
+        SELECT
+            file.post_id AS postId,
+            file.file_original_name AS fileOriginalName,
+            file.file_name AS fileName,
+            file.file_path AS filePath
+        FROM
+            file file
+        WHERE
+            file.file_id = ${fileId}
+    </select>
 </mapper>

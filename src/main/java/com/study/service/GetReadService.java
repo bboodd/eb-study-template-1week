@@ -17,13 +17,15 @@ public class GetReadService implements HttpService{
         PostVo postVo = new PostVo();
         int viewUpdateResult = 0;
         List<CommentVo> commentVoList = new ArrayList<>();
+        List<FileVo> fileVoList = new ArrayList<>();
         String view = "dispatch:WEB-INF/jsp/post.jsp";
 
         try {
-            if(postId != null && !"".equals(postId)){
+            if(postId != null && !postId.isBlank()){
                 viewUpdateResult = postDao.updatePostViewCount(Integer.parseInt(postId));
                 postVo = postDao.selectPostById(Integer.parseInt(postId));
                 commentVoList = postDao.selectCommentList(Integer.parseInt(postId));
+                fileVoList = postDao.selectFileList(Integer.parseInt(postId));
             }
 
             //post vo객체를 dto로 변환
@@ -55,12 +57,25 @@ public class GetReadService implements HttpService{
                 commentDtoList.add(commentDto);
             }
 
+            //파일 vo객체 리스트를 dto로 변환
+            List<FileDto> fileDtoList = new ArrayList<>();
+            for(FileVo fileVo : fileVoList){
+                FileDto fileDto = FileDto.builder()
+                        .fileId(fileVo.getFileId())
+                        .postId(fileVo.getPostId())
+                        .fileOriginalName(fileVo.getFileOriginalName())
+                        .build();
+
+                fileDtoList.add(fileDto);
+            }
+
             if(postDto.getState() == 0){ //삭제된 페이지를 불러올 경우
                 // TODO: 404 호출해야함
                 view = "redirect:unknown.do?postId="+postDto.getPostId();
             } else{
                 request.setAttribute("postDto", postDto);
                 request.setAttribute("commentList", commentDtoList);
+                request.setAttribute("fileList", fileDtoList);
             }
 
             //불러온 댓글 리스트 체크
