@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="post">
+<mapper namespace="com.study.mapper.PostMapper">
 
 <!--    게시글 등록-->
-    <insert id="insertPost" parameterType="com.study.model.PostDto" useGeneratedKeys="true" keyProperty="postId">
+    <insert id="insertPost" parameterType="com.study.model.PostVo" useGeneratedKeys="true" keyProperty="postId">
         INSERT INTO post(category_id, name, password, title, content)
         VALUES (#{categoryId}, #{name}, #{password}, #{title}, #{content})
     </insert>
@@ -17,50 +17,38 @@
         FROM category
     </select>
 
-<!--    전체 게시글 리스트 가져오기-->
-    <select id="selectPostList" resultType="com.study.model.PostVo">
+<!--    게시글 리스트 가져오기-->
+    <select id="selectPostList" parameterType="com.study.model.SearchVo" resultType="com.study.model.PostVo">
         SELECT
             post.post_id AS postId,
-            category.category_name AS category,
+            category.category_name AS categoryName,
             post.name,
             post.title,
             post.view_count AS viewCount,
             DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
-            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
-        FROM post post
-            JOIN category category
-                ON post.category_id = category.category_id
-    </select>
-
-<!--    검색 게시글 리스트 가져오기-->
-    <select id="selectSearchPostList" parameterType="com.study.model.SearchDto" resultType="com.study.model.PostVo">
-        SELECT
-            post.post_id AS postId,
-            category.category_name AS category,
-            post.name,
-            post.title,
-            post.view_count AS viewCount,
-            DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
-            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
+            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate,
+            post.state
         FROM post post
                  JOIN category category
                       ON post.category_id = category.category_id
         <where>
-        <if test="startDate != ''">
-            post.create_date >= #{startDate}
+        <if test="startDate != null and startDate != ''">
+            AND post.create_date >= #{startDate}
         </if>
 
-        <if test="endDate != ''">
+        <if test="endDate != null and endDate != ''">
             AND #{endDate} >= post.create_date
         </if>
 
-        <if test="categoryId != 0">
+        <if test="categoryId != null and categoryId != ''">
             AND post.category_id = #{categoryId}
         </if>
-        <if test="keyword != ''">
+        <if test="keyword != null and keyword != ''">
             AND CONCAT(post.title, post.name, post.content) LIKE CONCAT('%', #{keyword}, '%')
         </if>
+        AND post.state = 1
         </where>
+        ORDER BY post.post_id DESC
     </select>
 
 <!--    선택 게시글 가져오기  -->
@@ -69,11 +57,13 @@
             post.post_id AS postId,
             category.category_name AS category,
             post.name,
+            post.password,
             post.title,
             post.content,
             post.view_count AS viewCount,
             DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
-            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate
+            DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate,
+            post.state
         FROM post post
                  JOIN category category
                       ON post.category_id = category.category_id
@@ -89,7 +79,7 @@
     </update>
 
 <!--    댓글 추가  -->
-    <insert id="insertComment" parameterType="com.study.model.CommentDto" useGeneratedKeys="true" keyProperty="commentId">
+    <insert id="insertComment" parameterType="com.study.model.CommentVo" useGeneratedKeys="true" keyProperty="commentId">
         INSERT INTO comment(post_id, content)
         VALUES (#{postId}, #{content})
     </insert>
@@ -101,5 +91,46 @@
             DATE_FORMAT(comment.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate
         FROM comment comment
         WHERE comment.post_id = #{postId}
+    </select>
+
+<!--    게시글 삭제 구현 ( state를 0으로 만든다 )   -->
+    <update id="deletePost" parameterType="int">
+        UPDATE post
+        SET state = 0
+        WHERE post_id = #{postId}
+    </update>
+
+<!--    파일 업로드  -->
+    <insert id="insertFile" parameterType="com.study.model.FileVo" useGeneratedKeys="true" keyProperty="postId">
+        INSERT INTO file(post_id, file_original_name, file_name, file_path, file_size)
+        VALUES (#{postId}, #{fileOriginalName}, #{fileName}, #{filePath}, #{fileSize})
+    </insert>
+
+<!--    postId에 해당하는 파일 리스트 가져오기   -->
+    <select id="selectFileList" parameterType="int" resultType="com.study.model.FileVo">
+        SELECT
+            file.file_id AS fileId,
+            file.post_id AS postId,
+            file.file_original_name AS fileOriginalName,
+            file.file_name AS fileName,
+            file.file_path AS filePath,
+            file.file_size AS fileSize
+        FROM
+            file file
+        WHERE
+            file.post_id = ${postId}
+    </select>
+
+<!--    파일 id에 해당하는 파일 가져오기  -->
+    <select id="selectFile" parameterType="int" resultType="com.study.model.FileVo">
+        SELECT
+            file.post_id AS postId,
+            file.file_original_name AS fileOriginalName,
+            file.file_name AS fileName,
+            file.file_path AS filePath
+        FROM
+            file file
+        WHERE
+            file.file_id = ${fileId}
     </select>
 </mapper>

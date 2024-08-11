@@ -1,19 +1,20 @@
 package com.study.model;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
+@Data
+@Builder
 public class PostDto {
 
     int postId;
 
     int categoryId;
+
+    String categoryName;
 
     String name;
 
@@ -28,4 +29,6 @@ public class PostDto {
     String createDate;
 
     String updateDate;
+
+    int state;
 }

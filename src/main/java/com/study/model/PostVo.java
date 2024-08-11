@@ -5,12 +5,15 @@ import lombok.*;
 //db용 객체
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
+@Builder
 @Value
 public class PostVo {
 
     private int postId;
 
-    private String category;
+    private int categoryId;
+
+    private String categoryName;
 
     private String name;
 
@@ -25,4 +28,6 @@ public class PostVo {
     private String createDate;
 
     private String updateDate;
+
+    private int state;
 }
