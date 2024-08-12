@@ -70,6 +70,7 @@
                 <thead>
                 <tr>
                     <th scope="col">카테고리</th>
+                    <th scope="col"></th>
                     <th scope="col">제목</th>
                     <th scope="col">작성자</th>
                     <th scope="col">조회수</th>
@@ -83,6 +84,14 @@
                     <c:forEach var="post" items="${postList}">
                         <tr>
                             <td>${post.categoryName}</td>
+                            <c:choose>
+                                <c:when test="${post.fileCount != 0}">
+                                    <td>파일o</td>
+                                </c:when>
+                                <c:when test="${post.fileCount == 0}">
+                                    <td></td>
+                                </c:when>
+                            </c:choose>
                             <td onclick="location.href='read.do?postId=${post.postId}'">${post.title}</td>
                             <td>${post.name}</td>
                             <td>${post.viewCount}</td>

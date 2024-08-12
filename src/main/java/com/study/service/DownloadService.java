@@ -25,7 +25,7 @@ public class DownloadService implements HttpService{
         response.setCharacterEncoding("UTF-8");
         String fileId = request.getParameter("fileId");
         String postId = request.getParameter("postId");
-        String view = "read.do?postId=" + postId;
+        String view = "redirect:read.do?postId=" + postId;
         FileVo fileVo = new FileVo();
 
         try {
@@ -51,7 +51,7 @@ public class DownloadService implements HttpService{
             response.setContentType(mimeType);
 
             //파일 이름을 UTF-8 형식으로 인코딩
-            String encodedFileName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
+            String encodedFileName = new String(fileOriginalName.getBytes("UTF-8"), "ISO-8859-1");
             //HTTP 응답 헤더 설정
             response.setHeader("Content-Disposition", "attachment; filename=" + encodedFileName);
 

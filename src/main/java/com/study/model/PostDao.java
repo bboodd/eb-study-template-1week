@@ -211,7 +211,9 @@ public class PostDao {
                         .filePath(fileDto.getFilePath())
                         .fileSize(fileDto.getFileSize())
                         .build();
-                result += sqlSession.insert("insertFile", fileVo);
+                if(fileVo.getPostId() != 0){
+                    result += sqlSession.insert("insertFile", fileVo);
+                }
             }
         } catch(Exception e) {
             log.info("에러메세지: " + e.getMessage());

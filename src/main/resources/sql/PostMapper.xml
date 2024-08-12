@@ -27,7 +27,8 @@
             post.view_count AS viewCount,
             DATE_FORMAT(post.create_date, '%Y%.%m%.%d% %h%:%i') AS createDate,
             DATE_FORMAT(post.update_date, '%Y%.%m%.%d% %h%:%i') AS updateDate,
-            post.state
+            post.state,
+            NULLIF((SELECT COUNT(*) FROM file file WHERE file.post_id = post.post_id), 0) AS fileCount
         FROM post post
                  JOIN category category
                       ON post.category_id = category.category_id

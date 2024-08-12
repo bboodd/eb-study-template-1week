@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InsertPostValidator {
 
-    final int NAME_MAX_LENGTH = 5;
+    final int NAME_MAX_LENGTH = 10;
     final int NAME_MIN_LENGTH = 1;
     final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$";
     final int TITLE_CONTENT_MIN_LENGTH = 4;

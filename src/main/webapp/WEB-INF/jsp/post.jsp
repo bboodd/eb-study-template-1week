@@ -39,7 +39,7 @@
 </div>
     <c:if test="${fileList != null}">
         <c:forEach var="file" items="${fileList}">
-            <a href='download.do?fileId="${file.fileId}"&postId="${file.postId}"'>
+            <a href='download.do?fileId=${file.fileId}&postId=${file.postId}'>
                 ${file.fileOriginalName}
             </a><br />
         </c:forEach>

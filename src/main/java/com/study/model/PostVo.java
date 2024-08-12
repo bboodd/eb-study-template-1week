@@ -30,4 +30,6 @@ public class PostVo {
     private String updateDate;
 
     private int state;
+
+    private int fileCount;
 }
