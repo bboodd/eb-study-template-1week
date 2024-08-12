@@ -9,10 +9,10 @@ public class InputPostValidator {
     boolean flag = true;
     String numberRegex = "[+-]?\\d*(\\.\\d+)?";
 
-    public boolean validate(String categoryId, String name, String password, String title,String content) {
+    public boolean validate(String categoryId, String name, String password, String title,String content, String checkPassword) {
         categoryIdValidate(categoryId);
         nameValidate(name);
-        passwordValidate(password);
+        passwordValidate(password, checkPassword);
         titleValidate(title);
         contentValidate(content);
         return flag;
@@ -47,11 +47,15 @@ public class InputPostValidator {
         }
     }
 
-    private void passwordValidate(String password){
+    private void passwordValidate(String password, String checkPassword){
         try {
             if(password == null || password.isBlank()){
                 flag = false;
                 throw new IllegalArgumentException("비밀번호를 입력해야 합니다.");
+            }
+            if(!password.equals(checkPassword)){
+                flag = false;
+                throw new IllegalArgumentException("두 비밀번호가 다릅니다.");
             }
 
         } catch (Exception e){
@@ -85,4 +89,5 @@ public class InputPostValidator {
             e.printStackTrace();
         }
     }
+
 }

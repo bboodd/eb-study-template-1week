@@ -16,7 +16,7 @@ import java.util.HashMap;
 @Slf4j
 @WebServlet("*.do")
 @MultipartConfig(
-        location="/Users/gimhaghyeon/Desktop/upload",
+        location="/Users/gimhaghyeon/Desktop/upload/",
         maxFileSize = 1* 1024 * 1024 * 20, 		// 최대 파일크기 : 20MB
         maxRequestSize = 1 * 1024 * 1024 * 20	// 한 요청 당 최대 크기 : 20MB
 )

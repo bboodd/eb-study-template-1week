@@ -31,4 +31,6 @@ public class PostDto {
     String updateDate;
 
     int state;
+
+    int fileCount;
 }

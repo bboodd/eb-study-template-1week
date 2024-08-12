@@ -15,41 +15,59 @@
     <h2> add post</h2>
 </div>
 
-<form method="post" action="insert.do">
-    <label>Category:
-        <select type='number' name='categoryId' id='categoryId'>
-            <c:if test="${categoryList.size() != 0}">
-                <c:forEach var="category" items="${categoryList}">
-                    <option value="${category.categoryId}">${category.categoryName}</option>
-                </c:forEach>
-            </c:if>
-        </select>
-    </label>
+<form method="post" action="insert.do" enctype="multipart/form-data">
+    <p>
+        <label>Category:
+            <select type='number' name='categoryId' id='categoryId'>
+                <c:if test="${categoryList.size() != 0}">
+                    <c:forEach var="category" items="${categoryList}">
+                        <option value="${category.categoryId}">${category.categoryName}</option>
+                    </c:forEach>
+                </c:if>
+            </select>
+        </label>
+    </p>
 
-    <label>Name:
-        <input type="text" name="name" id="name"><br />
-    </label>
+    <p>
+        <label>Name:
+            <input type="text" name="name" id="name"><br />
+        </label>
+    </p>
 
-    <label>Password:
-        <input type="password" name="password" id="password"><br />
-    </label>
+    <p>
+        <label>Password:
+            <input type="password" name="password" id="password"><br />
+        </label>
+    </p>
+    <p>
+        <label>CheckPassword:
+            <input type="password" name="checkPassword" id="checkPassword"><bt />
+        </label>
+    </p>
+    <p>
+        <label>Title:
+            <input type="text" name="title" id="title"><br />
+        </label>
+    </p>
+    <p>
+        <label>Content:
+            <input type="text" name="content" id="content"><br />
+        </label>
+    </p>
+    <p>
+        <label>File:
+            <div id="preview">
 
-    <label>Title:
-        <input type="text" name="title" id="title"><br />
-    </label>
-
-    <label>Content:
-        <input type="text" name="content" id="content"><br />
-    </label>
-
-    <label>File:
-        <div id="preview">
-
-        </div>
-        <input type="file" id="file-input" multiple />
-    </label>
+            </div>
+        <p>
+            <input type="file" name="file" id="file-input" multiple />
+        </p>
+        </label>
+    </p>
     <div>
-        <button type="submit">Submit</button>
+        <p>
+            <button type="submit">Submit</button>
+        </p>
     </div>
 </form>
 

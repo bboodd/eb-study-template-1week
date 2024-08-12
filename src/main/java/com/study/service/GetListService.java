@@ -61,6 +61,7 @@ public class GetListService implements HttpService {
                         .createDate(postVo.getCreateDate())
                         .updateDate(postVo.getUpdateDate())
                         .state(postVo.getState())
+                        .fileCount(postVo.getFileCount())
                         .build();
 
                 //수정일자 처리
